@@ -22,7 +22,7 @@ movie_info = {}
 
 def get_content_value(row_data): #some have more little list inside(li or list item)
     #name of producers (more than 1)
-    if row.find("li"):
+    if row_data.find("li"):
         return [li.get_text(" ", strip=True).replace("\xa0", " ") for li in row_data.find_all("li")]
         #specify string anf strip whitespace   
     else:
