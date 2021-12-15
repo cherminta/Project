@@ -42,8 +42,30 @@ import re
 #we also want demical like 56.7 millions
 number = r"\d+(,\d{3})*\.*\d*"
 
-def str_to_int(budget):
-    value_string = re.search(number, budget).group()
+amount = r"thousand|million|billion"
+
+#money_conversion ("$12.2 million") --> 12200000 #word syntax
+word_con = rf"\${number}(-)?\s({amount})"
+# - dash (12-13 million) ? = exist or doesn't exist
+#money conversion ("$790,000") --> #value syntax
+value_con = rf"\${number}"
+
+
+def word_to_value(word):
+    value_dict = {"thousand": 1000, "million": 1000000, "billion": 1000000000}
+    return value_dict[word]
+
+def word_syn(string):
+    value_string = re.search(number, string).group()
+    value = float(value_string.replace(",", ""))
+    word = re.search(amount, string).group()
+    word_value = word_to_value(word)
+    return value*word_value
+
+
+def value_syn(string):
+
+    value_string = re.search(number, string).group()
     #strip ot comma before solutions
     value = float(value_string.replace(",", ""))
     #search for number 
@@ -51,4 +73,21 @@ def str_to_int(budget):
     return value
 
 
-print(str_to_int("$790,000"))
+def money_conversion(money):
+
+    if isinstance(money, list):
+        money = money[0]
+    
+    word_s = re.search(word_con, money)
+    value_s = re.search(value_con, money)
+
+    if word_s:
+        word_s = word_s.group()
+        return word_syn(word_s)
+
+    elif value_s:
+        value_s = value_s.group()
+        return value_syn(value_s)
+
+
+print(money_conversion("$790 million"))
