@@ -4,6 +4,9 @@
 from bs4 import BeautifulSoup as bs
 import json
 
+from Disney_Movie1 import save_data
+
+#load data from json file 
 def load_data(title):
     with open(title) as f:
         return json.load(f)
@@ -45,8 +48,11 @@ number = r"\d+(,\d{3})*\.*\d*"
 amount = r"thousand|million|billion"
 
 #money_conversion ("$12.2 million") --> 12200000 #word syntax
-word_con = rf"\${number}(-)?\s({amount})"
-# - dash (12-13 million) ? = exist or doesn't exist
+word_con = rf"\${number}(-|\sto\s|–)?({number})?\s({amount})"
+# - dash and "to" (12-13 million or 12 to 13 million) 
+# ? = exist or doesn't exist (we use the lower range)
+# \s word \s
+
 #money conversion ("$790,000") --> #value syntax
 value_con = rf"\${number}"
 
@@ -58,7 +64,8 @@ def word_to_value(word):
 def word_syn(string):
     value_string = re.search(number, string).group()
     value = float(value_string.replace(",", ""))
-    word = re.search(amount, string).group()
+    word = re.search(amount, string, flags=re.I).group().lower()
+    #flag = ignoring the words (capital) (million biilion)
     word_value = word_to_value(word)
     return value*word_value
 
@@ -75,10 +82,13 @@ def value_syn(string):
 
 def money_conversion(money):
 
+    if money == "N/A":
+        return None
+
     if isinstance(money, list):
         money = money[0]
     
-    word_s = re.search(word_con, money)
+    word_s = re.search(word_con, money, flags=re.I)
     value_s = re.search(value_con, money)
 
     if word_s:
@@ -89,5 +99,52 @@ def money_conversion(money):
         value_s = value_s.group()
         return value_syn(value_s)
 
+    else:
+        return None 
 
-print(money_conversion("$790 million"))
+for movie in movie_info_list:
+    movie["Budget (float)"] = money_conversion(movie.get("Budget", "N/A"))
+    movie["Box office (float)"] = money_conversion(movie.get("Box office", "N/A"))
+
+
+#convert date into datetimes
+#some have more than 1 day (diff. place released) 
+#pattern April 20, 1946  
+# print(movie_info_list[10])
+
+from datetime import datetime
+
+dates = [movie.get("Release date", "N/A") for movie in movie_info_list]
+
+
+def clean_date(date):
+    #'April 20, 1946 (New York City premiere)', 'August 15, 1946 (U.S.)'] 
+
+    return date.split("(")[0].strip()
+
+def date_conversion(date):
+
+    if isinstance(date, list):
+        date = date[0]
+
+    if date == "N/A":
+        return None 
+
+    date_str = clean_date(date)
+
+    #format month day year
+    fmts = ["%B %d, %Y", "%d %B %Y"] #some are 26 October 1953
+    for fmt in fmts:
+        try:
+            return datetime.strptime(date_str, fmt)
+
+        except:
+            pass
+    
+    return None
+
+for movie in movie_info_list:
+    movie["Release date (datetime)"] = date_conversion(movie.get("Release date", "N/A"))
+
+#save new json file (more clean)
+save_data("movie_data_cleaned2.json", movie_info_list)
