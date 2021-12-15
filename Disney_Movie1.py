@@ -70,6 +70,9 @@ base_path = "https://en.wikipedia.org/"
 movie_info_list = []
 
 for index, movie in enumerate(movies):
+    if index % 10 == 0:
+        print(index)
+        
     try:
         rel_path = movie['href']
         full_path = base_path + rel_path
