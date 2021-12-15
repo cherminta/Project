@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup as bs
 r = requests.get('https://en.wikipedia.org/wiki/List_of_Walt_Disney_Pictures_films')
 
 #convert to bs obj.
-soup = bs(r.content, "lxml") #html parser
+soup = bs(r.content, "lxml") 
 #print the HTML
 contents = soup.prettify() #content in the website
 
@@ -12,7 +12,8 @@ contents = soup.prettify() #content in the website
 movies = soup.select(".wikitable.sortable i a") #a bec of some movies have no links
 #movies[0].a['href'] = link of the first movie
 
-def get_content_value(row_data): #some have more little list inside(li or list item)
+def get_content_value(row_data): 
+    #some have more little list inside(li or list item)
     #name of producers (more than 1)
     if row_data.find("li"):
         return [li.get_text(" ", strip=True).replace("\xa0", " ") for li in row_data.find_all("li")]
