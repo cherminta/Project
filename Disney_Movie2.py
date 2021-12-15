@@ -4,8 +4,6 @@
 from bs4 import BeautifulSoup as bs
 import json
 
-from Disney_Movie1 import save_data
-
 #load data from json file 
 def load_data(title):
     with open(title) as f:
@@ -146,5 +144,20 @@ def date_conversion(date):
 for movie in movie_info_list:
     movie["Release date (datetime)"] = date_conversion(movie.get("Release date", "N/A"))
 
-#save new json file (more clean)
-save_data("movie_data_cleaned2.json", movie_info_list)
+
+#save new data file (more clean)
+#since datetime cannot be save in json, we use new one "pickle"
+
+import pickle
+
+def save_data_pickle(name, data):
+    with open (name, "wb") as f:
+        pickle.dump(data, f)
+
+def load_data_pickle(name):
+    with open(name, "rb") as f:
+        return pickle.load(f)
+
+save_data_pickle("movie_data_moreclean.pickle", movie_info_list)
+
+a = load_data_pickle("movie_data_moreclean.pickle")
