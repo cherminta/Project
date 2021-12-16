@@ -50,7 +50,6 @@ class MyWindow(QtWidgets.QWidget):
         self.TitleBox.addItem("A-Z")
         self.TitleBox.addItem("Z-A")
         self.TitleBox.activated[str].connect(self.ButtonAr)
-        self.TitleBox.currentTextChanged.connect(self.ori_text)
         self.TitleBox.setStyleSheet(stylesheet(self))
     
         self.DateBox  = QtWidgets.QComboBox()
@@ -58,7 +57,6 @@ class MyWindow(QtWidgets.QWidget):
         self.DateBox.addItem("Newest")
         self.DateBox.addItem("Oldest")
         self.DateBox.activated[str].connect(self.ButtonAr)
-        self.DateBox.currentTextChanged.connect(self.ori_text)
         self.DateBox.setStyleSheet(stylesheet(self))
     
         self.LengthBox  = QtWidgets.QComboBox()
@@ -66,7 +64,6 @@ class MyWindow(QtWidgets.QWidget):
         self.LengthBox.addItem("Shortest")
         self.LengthBox.addItem("Longest")
         self.LengthBox.activated[str].connect(self.ButtonAr)
-        self.LengthBox.currentTextChanged.connect(self.ori_text)
         self.LengthBox.setStyleSheet(stylesheet(self))
     
         self.BudgetBox  = QtWidgets.QComboBox()
@@ -74,7 +71,6 @@ class MyWindow(QtWidgets.QWidget):
         self.BudgetBox.addItem("Most Budget")
         self.BudgetBox.addItem("Least Budget")
         self.BudgetBox.activated[str].connect(self.ButtonAr)
-        self.BudgetBox.currentTextChanged.connect(self.ori_text)
         self.BudgetBox.setStyleSheet(stylesheet(self))
     
         self.ImdbBox  = QtWidgets.QComboBox()
@@ -82,7 +78,6 @@ class MyWindow(QtWidgets.QWidget):
         self.ImdbBox.addItem("Highest rating")
         self.ImdbBox.addItem("Lowest rating")
         self.ImdbBox.activated[str].connect(self.ButtonAr)
-        self.ImdbBox.currentTextChanged.connect(self.ori_text)
         self.ImdbBox.setStyleSheet(stylesheet(self))
     
         self.MetaBox  = QtWidgets.QComboBox()
@@ -90,7 +85,6 @@ class MyWindow(QtWidgets.QWidget):
         self.MetaBox.addItem("Highest rating")
         self.MetaBox.addItem("Lowest rating")
         self.MetaBox.activated[str].connect(self.MetaAr)
-        self.MetaBox.currentTextChanged.connect(self.meta_text)
         self.MetaBox.setStyleSheet(stylesheet(self))
     
         self.RottenBox  = QtWidgets.QComboBox()
@@ -98,7 +92,6 @@ class MyWindow(QtWidgets.QWidget):
         self.RottenBox.addItem("Highest rating")
         self.RottenBox.addItem("Lowest rating")
         self.RottenBox.activated[str].connect(self.RottenAr)
-        self.RottenBox.currentTextChanged.connect(self.rotten_text)
         self.RottenBox.setStyleSheet(stylesheet(self))
     
         grid = QtWidgets.QGridLayout()
@@ -117,27 +110,6 @@ class MyWindow(QtWidgets.QWidget):
         self.model.appendRow(item)
         self.model.setData(self.model.index(0, 0), "", 0)
         self.tableView.resizeColumnsToContents()
-
-   def ori_text(self, text):
-
-        if text != 'A-Z' and text != 'Z-A':
-            self.TitleBox.setCurrentText('Title') 
-        elif text != 'Newest' and text != 'Oldest':
-            self.DateBox.setCurrentText('Release date')
-        elif text !=  'Longest' and text != 'Shortest':
-            self.LengthBox.setCurrentText('Length')                
-        elif text != 'Most Budget' and text != 'Least Budget':
-            self.BudgetBox.setCurrentText('Budget')
-        elif text != 'Highest rating' and text != 'Lowest rating':
-            self.ImdbBox.setCurrentText('IMDB score')
-
-   def meta_text(self, text):
-        if text != 'Highest rating' and text != 'Lowest rating':
-            self.MetaBox.setCurrentText('Metascore')
-    
-   def rotten_text(self, text):
-        if text != 'Highest rating' and text != 'Lowest rating':
-            self.RottenBox.setCurrentText('Rotten tomatoes')
 
    def arrange(self, Ar):
        f = open(Ar, 'r')
