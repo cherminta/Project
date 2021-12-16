@@ -4,7 +4,7 @@
 import json
 from Disney_Movie2 import load_data_pickle
 
-movie_info_list = load_data_pickle("disney_movie_data_final.pickle")
+movie_info_list = load_data_pickle("final_disney_movie_data.pickle")
 
 #in order to lelt movie_info_data stay the same (not changed)
 movie_info_copy = [movie.copy() for movie in movie_info_list]

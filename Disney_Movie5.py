@@ -98,5 +98,10 @@ for movie in movie_info_list:
     
 
 """ running_time = df.sort_values(["Running time (int)"], ascending=True) """
+import pickle
 
-print(movie_info_list[2])
+def save_data_pickle(name, data):
+    with open (name, "wb") as f:
+        pickle.dump(data, f)
+
+save_data_pickle('final_disney_movie_data.pickle', movie_info_list)
