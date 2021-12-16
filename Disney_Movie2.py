@@ -11,7 +11,7 @@ def load_data(title):
 
 movie_info_list = load_data("movie_data_cleaned.json")
 
-#convert running time into integer (minutes)
+"""convert running time into integer (minutes)"""
 
 def minute_to_int(running_time):
     if running_time == "N/A":
@@ -60,6 +60,7 @@ def word_to_value(word):
     return value_dict[word]
 
 def word_syn(string):
+    
     value_string = re.search(number, string).group()
     value = float(value_string.replace(",", ""))
     word = re.search(amount, string, flags=re.I).group().lower()
@@ -79,6 +80,7 @@ def value_syn(string):
 
 
 def money_conversion(money):
+    """for budget and box office"""
 
     if money == "N/A":
         return None

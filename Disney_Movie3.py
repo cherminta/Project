@@ -35,8 +35,8 @@ for movie in movie_info_list:
     title = movie['title']
     omdb_info = get_omdb_info(title)
     movie['imdb'] = omdb_info.get("imdbRating", None)
-    movie['metascroe'] = omdb_info.get("Metascore", None)
-    movie['rotten_tomatoes'] = get_rotten_tomato_score(omdb_info)
+    movie['Metascore'] = omdb_info.get("Metascore", None)
+    movie['Rotten tomatoes'] = get_rotten_tomato_score(omdb_info)
 
 
 #svae the final data (including these ratings)
