@@ -95,8 +95,20 @@ for movie in movie_info_list:
     movie["imdb"] = imdb_num(movie.get("imdb", "N/A"))
     movie["Metascore"] = meta_int(movie.get("Metascore", "N/A"))
     movie["Rotten tomatoes"] = rotten_tomato_int(movie.get("Rotten tomatoes", "N/A"))
-    
+    #already changed (create new column)
+    remove_key = movie.pop("Release date", None)
+    remove_key = movie.pop("Running time", None)
+    #too much (not important) information
+    remove_key = movie.pop("Color process", None)
+    remove_key = movie.pop("Japanese", None)
+    remove_key = movie.pop("Hepburn", None)
+    remove_key = movie.pop("Adaptation by", None)
+    remove_key = movie.pop("Animation by", None)
+    remove_key = movie.pop("Traditional", None)
+    remove_key = movie.pop("Simplified", None)
+    remove_key = movie.pop("Original title", None)
 
+    
 """ running_time = df.sort_values(["Running time (int)"], ascending=True) """
 import pickle
 
@@ -104,4 +116,4 @@ def save_data_pickle(name, data):
     with open (name, "wb") as f:
         pickle.dump(data, f)
 
-save_data_pickle('final_disney_movie_data.pickle', movie_info_list)
+save_data_pickle('final2_disney_movie_data.pickle', movie_info_list)

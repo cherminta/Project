@@ -1,6 +1,5 @@
 #After finish putting information in json file, Clean the information in json 
-#convert running times into integer / convert dates into datetime obj / convert budget&box office into numbers
-#split up the long strings
+#convert running times into integer / convert dates into datetime obj / convert budget&box office into numbers / split up the long strings
 from bs4 import BeautifulSoup as bs
 import json
 
@@ -32,10 +31,8 @@ def minute_to_int(running_time):
 for movie in movie_info_list:
     movie["Running time (minutes)"] = minute_to_int(movie.get("Running time", "N/A"))
 
-## **get minutes of all** print([movie.get("Running time (minutes)", "N/A")for movie in movie_info_list])
 
 #convert budget and box office (string) to numbers 
-
 import re
 
 #\d+ = digit
@@ -47,13 +44,11 @@ amount = r"thousand|million|billion"
 
 #money_conversion ("$12.2 million") --> 12200000 #word syntax
 word_con = rf"\${number}(-|\sto\s|–)?({number})?\s({amount})"
-# - dash and "to" (12-13 million or 12 to 13 million) 
-# ? = exist or doesn't exist (we use the lower range)
+# - dash and "to" (12-13 million or 12 to 13 million) ? = exist or doesn't exist (we use the lower range)
 # \s word \s
 
 #money conversion ("$790,000") --> #value syntax
 value_con = rf"\${number}"
-
 
 def word_to_value(word):
     value_dict = {"thousand": 1000, "million": 1000000, "billion": 1000000000}
