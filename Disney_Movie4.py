@@ -2,6 +2,9 @@
 #to save in json (have to change datetime)
 
 import json
+
+from numpy.core.numeric import full
+from pandas.core.indexes import base
 from Disney_Movie2 import load_data_pickle
 
 movie_info_list = load_data_pickle("final2_disney_movie_data.pickle")
@@ -34,11 +37,59 @@ def save_data(title, data):
 #CONVERT TO CSV
 
 import pandas as pd
-
+import requests
+from bs4 import BeautifulSoup as bs
 #dataframe of information
 df = pd.DataFrame(movie_info_list)
+#add HTML to wiki
+r = requests.get('https://en.wikipedia.org/wiki/List_of_Walt_Disney_Pictures_films')
+soup = bs(r.content, "lxml")
+movies = soup.select(".wikitable.sortable i a")
+base_path = "https://en.wikipedia.org/"
+link = []
 
-df.to_csv("disney_movie_data_final.csv")
+title_list = []
+for mov in movie_info_list:
+    title_list.append(mov['title'])
+
+
+count = 0
+prev = 0
+for movie in movies:
+    rel_path = movie['href']
+    full_path = base_path + rel_path
+    title = movie['title'].strip()
+    if len(link) == 501:
+        break
+    
+    if '(' in title:
+        title = title.split('(')
+        title = title[0]
+        title = title[:-1]
+    
+    if count == 0:
+        link.append(full_path)
+        count += 1
+    elif title == title_list[count] and prev == 0:
+        link.append(full_path)
+        count += 1
+    elif title == title_list[count]:
+        link.append(full_path)
+        count += 1
+        prev = 0
+    elif title == title_list[count+1] and prev == 1:
+        link.append(prev_path)
+        link.append(full_path)
+        count += 2
+        prev = 0
+    else:
+        prev = 1 #have but not correct name 
+
+    prev_path = full_path
+
+df = df.assign( HTML=link)
+
+df.to_csv("last_disney_movie_data_final.csv")
 
 ar_title = df.sort_values(['title'], ascending=True)
 ar_title.to_csv("movie_title_ar")
