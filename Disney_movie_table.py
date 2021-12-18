@@ -20,7 +20,7 @@ class MyWindow(QtWidgets.QWidget):
         self.model.dataChanged.connect(self.finishedEdit)
 
         #open csv
-        fileName = "disney_movie_data_final.csv"
+        fileName = "last_disney_movie_data_final.csv"
  
         ff = open(fileName, 'r')
         mytext = ff.read()
