@@ -7,7 +7,7 @@ from PyQt5.QtGui import QImage, QPainter
 from PyQt5.QtCore import QFile, QLine
  
 class MyWindow(QtWidgets.QWidget):
-   def __init__(self, fileName, parent=None):
+   def __init__(self, fileName):
         super().__init__()
         self.model =  QtGui.QStandardItemModel(self)
  
@@ -186,13 +186,8 @@ class MyWindow(QtWidgets.QWidget):
         elif bt == "Lowest rating":
            self.arrange('movie_rotten_ar')
  
-
- 
    def finishedEdit(self):
        self.tableView.resizeColumnsToContents()
- 
-  
-
 
 def stylesheet(self):
        return """
@@ -203,7 +198,7 @@ border-radius: 0px;
 font-size: 12px;
         background-color: #f8f8f8;
 selection-color: white;
-selection-background-color: #00ED56;
+selection-background-color: #759E9C;
        }
  
 QTableView QTableCornerButton::section {
